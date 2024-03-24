@@ -7,7 +7,7 @@ export default function HomePage() {
     <main className="min-h-screen bg-sky-100 flex justify-center items-center">
       <div className={cn("text-center")}>
         <h1 className="font text-3xl text-gray-800 mb-8">Auth Toolkit</h1>
-        <Button className="p-9 text-2xl group" asChild>
+        <Button className="p-9 text-2xl group rounded-full" asChild>
           <Link href={"/auth/sign-in"}>
             <h2>
               Sign in{" "}
