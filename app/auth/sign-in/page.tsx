@@ -9,6 +9,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import FormState from "@/components/ui/form-state";
 import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
@@ -16,7 +17,9 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 
 const formSchema = z.object({
-  email: z.string().email(),
+  email: z.string().email({
+    message: "Enter valid email",
+  }),
   password: z.string().min(1, {
     message: "Enter password",
   }),
