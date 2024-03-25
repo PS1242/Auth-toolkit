@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
+import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
@@ -76,6 +77,14 @@ export default function SignInPage() {
             </Button>
           </form>
         </Form>
+        <Button
+          className="font-normal w-full mt-4"
+          variant={"link"}
+          asChild
+          size={"sm"}
+        >
+          <Link href={"/auth/signup"}>Don't have an account?</Link>
+        </Button>
       </div>
     </div>
   );
