@@ -38,10 +38,9 @@ export default function SignInPage() {
   };
 
   return (
-    <div className="min-h-screen flex justify-center items-center bg-sky-100 flex-col">
-      <h1 className="font text-3xl text-gray-800 mb-8">Auth Toolkit</h1>
-      <div className="p-8 bg-white w-[400px] rounded-lg shadow-sm text-gray-700">
-        <h3 className="text-center mb-8">Welcome back</h3>
+    <>
+      <div className="p-8 bg-white w-[400px] rounded-lg shadow-sm">
+        <h3 className="text-center mb-8  text-gray-700">Welcome back</h3>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
             <FormField
@@ -51,11 +50,7 @@ export default function SignInPage() {
                 <FormItem>
                   <FormLabel>Email</FormLabel>
                   <FormControl>
-                    <Input
-                      placeholder="johndoe@gmail.com"
-                      {...field}
-                      type="email"
-                    />
+                    <Input placeholder="johndoe@gmail.com" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -85,9 +80,9 @@ export default function SignInPage() {
           asChild
           size={"sm"}
         >
-          <Link href={"/auth/signup"}>Don't have an account?</Link>
+          <Link href={"/auth/sign-up"}>Don't have an account?</Link>
         </Button>
       </div>
-    </div>
+    </>
   );
 }
