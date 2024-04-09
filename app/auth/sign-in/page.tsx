@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -26,8 +27,12 @@ export default function SignInPage() {
     },
   });
 
+  const [loading, setLoading] = useState(false);
+
   const onSubmit = async (values: z.infer<typeof LoginSchema>) => {
+    setLoading(true);
     const resp = await axios.post("/api/sign-in", values);
+    setLoading(false);
   };
 
   return (
@@ -43,7 +48,11 @@ export default function SignInPage() {
                 <FormItem>
                   <FormLabel>Email</FormLabel>
                   <FormControl>
-                    <Input placeholder="johndoe@gmail.com" {...field} />
+                    <Input
+                      placeholder="johndoe@gmail.com"
+                      {...field}
+                      disabled={loading}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -56,13 +65,18 @@ export default function SignInPage() {
                 <FormItem>
                   <FormLabel>Password</FormLabel>
                   <FormControl>
-                    <Input placeholder="******" {...field} type="password" />
+                    <Input
+                      placeholder="******"
+                      {...field}
+                      type="password"
+                      disabled={loading}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
-            <Button className="w-full" type="submit">
+            <Button className="w-full" type="submit" disabled={loading}>
               Login
             </Button>
           </form>
