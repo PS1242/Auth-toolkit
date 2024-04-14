@@ -13,10 +13,11 @@ import {
 import { Input } from "@/components/ui/input";
 import { SignupSchema } from "@/schemas";
 import { zodResolver } from "@hookform/resolvers/zod";
-import axios from "axios";
+import axios, { AxiosResponse } from "axios";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import FormState from "@/components/ui/form-state";
 
 export default function SignUpPage() {
   const form = useForm<z.infer<typeof SignupSchema>>({
@@ -29,10 +30,19 @@ export default function SignUpPage() {
   });
 
   const [loading, setLoading] = useState(false);
+  const [response, setResponse] = useState<{
+    type: "success" | "error";
+    message: string;
+  } | null>(null);
 
   const onSubmit = async (values: z.infer<typeof SignupSchema>) => {
     setLoading(true);
-    const resp = await axios.post("/api/sign-up", values);
+    try {
+      const resp: AxiosResponse = await axios.post("/api/sign-up", values);
+      setResponse({ type: "success", message: resp?.data?.response });
+    } catch (err: any) {
+      setResponse({ type: "error", message: err?.response?.data?.error });
+    }
     setLoading(false);
   };
 
@@ -93,6 +103,9 @@ export default function SignUpPage() {
               </FormItem>
             )}
           />
+          {response && (
+            <FormState type={response?.type} message={response?.message} />
+          )}
           <Button className="w-full" type="submit" disabled={loading}>
             Sign up
           </Button>
