@@ -17,6 +17,9 @@ import axios from "axios";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import FormState from "@/components/ui/form-state";
+import { useRouter } from "next/navigation";
+import { DEFAULT_LOGIN_REDIRECT_URL } from "@/routes";
 
 export default function SignInPage() {
   const form = useForm<z.infer<typeof LoginSchema>>({
@@ -26,12 +29,23 @@ export default function SignInPage() {
       password: "",
     },
   });
+  const router = useRouter();
 
+  const [response, setResponse] = useState<{
+    type: "success" | "error";
+    message: string;
+  } | null>(null);
   const [loading, setLoading] = useState(false);
 
   const onSubmit = async (values: z.infer<typeof LoginSchema>) => {
     setLoading(true);
-    const resp = await axios.post("/api/sign-in", values);
+    setResponse(null);
+    try {
+      await axios.post("/api/sign-in", values);
+      router.push(DEFAULT_LOGIN_REDIRECT_URL);
+    } catch (err: any) {
+      setResponse({ type: "error", message: err?.response?.data?.error });
+    }
     setLoading(false);
   };
 
@@ -76,6 +90,9 @@ export default function SignInPage() {
                 </FormItem>
               )}
             />
+            {response && (
+              <FormState type={response?.type} message={response?.message} />
+            )}
             <Button className="w-full" type="submit" disabled={loading}>
               Login
             </Button>
