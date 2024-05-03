@@ -22,6 +22,7 @@ import { useRouter } from "next/navigation";
 import { DEFAULT_LOGIN_REDIRECT_URL } from "@/routes";
 import { FcGoogle } from "react-icons/fc";
 import { FaGithub } from "react-icons/fa";
+import { signIn } from "next-auth/react";
 
 export default function SignInPage() {
   const form = useForm<z.infer<typeof LoginSchema>>({
@@ -98,18 +99,24 @@ export default function SignInPage() {
             {/* Social login buttons */}
             <div className="flex gap-2">
               <Button
+                type="button"
                 size={"lg"}
                 variant={"outline"}
                 className="w-full"
-                onClick={() => {}}
+                onClick={() => {
+                  signIn("google", { callbackUrl: DEFAULT_LOGIN_REDIRECT_URL });
+                }}
               >
                 <FcGoogle className="w-5 h-5" />
               </Button>
               <Button
+                type="button"
                 size={"lg"}
                 variant={"outline"}
                 className="w-full"
-                onClick={() => {}}
+                onClick={() => {
+                  signIn("github", { callbackUrl: DEFAULT_LOGIN_REDIRECT_URL });
+                }}
               >
                 <FaGithub className="w-5 h-5" />
               </Button>
