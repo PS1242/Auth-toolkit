@@ -18,9 +18,10 @@ import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import FormState from "@/components/ui/form-state";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { DEFAULT_LOGIN_REDIRECT_URL } from "@/routes";
 import SocialLogins from "@/components/ui/social-logins";
+import { ACCOUNT_LINK_ERROR } from "@/lib/constants";
 
 export default function SignInPage() {
   const form = useForm<z.infer<typeof LoginSchema>>({
@@ -30,7 +31,12 @@ export default function SignInPage() {
       password: "",
     },
   });
+
   const router = useRouter();
+  const searchParams = useSearchParams();
+
+  const isAccountLinkError =
+    searchParams.get("error") === "OAuthAccountNotLinked";
 
   const [response, setResponse] = useState<{
     type: "success" | "error";
@@ -52,7 +58,7 @@ export default function SignInPage() {
 
   return (
     <>
-      <div className="p-8 bg-white w-[400px] rounded-lg shadow-sm">
+      <div className="p-8 bg-white w-[450px] rounded-lg shadow-sm">
         <h3 className="text-center mb-8  text-gray-700">Welcome back</h3>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
@@ -91,6 +97,9 @@ export default function SignInPage() {
                 </FormItem>
               )}
             />
+            {isAccountLinkError && (
+              <FormState type="error" message={ACCOUNT_LINK_ERROR} />
+            )}
             {response && (
               <FormState type={response?.type} message={response?.message} />
             )}

@@ -48,7 +48,7 @@ export default function SignUpPage() {
   };
 
   return (
-    <div className="p-8 bg-white w-[400px] rounded-lg shadow-sm">
+    <div className="p-8 bg-white w-[450px] rounded-lg shadow-sm">
       <h3 className="text-center mb-8 text-gray-700">Create Account</h3>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
