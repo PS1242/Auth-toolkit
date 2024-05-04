@@ -43,6 +43,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   adapter: PrismaAdapter(prisma),
   session: { strategy: "jwt" },
   callbacks: {
+    // user in the jwt callback will be available only while signing in
     jwt({ token, user }) {
       if (user && user.id) {
         token.id = user.id;
@@ -105,4 +106,12 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       },
     }),
   ],
+  events: {
+    linkAccount: async ({ user }) => {
+      await prisma.user.update({
+        where: { id: user.id },
+        data: { emailVerified: new Date() },
+      });
+    },
+  },
 });
