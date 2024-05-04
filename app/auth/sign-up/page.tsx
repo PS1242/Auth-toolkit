@@ -18,6 +18,7 @@ import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import FormState from "@/components/ui/form-state";
+import SocialLogins from "@/components/ui/social-logins";
 
 export default function SignUpPage() {
   const form = useForm<z.infer<typeof SignupSchema>>({
@@ -106,6 +107,7 @@ export default function SignUpPage() {
           {response && (
             <FormState type={response?.type} message={response?.message} />
           )}
+          <SocialLogins />
           <Button className="w-full" type="submit" disabled={loading}>
             Sign up
           </Button>
