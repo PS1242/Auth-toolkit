@@ -48,8 +48,12 @@ export default function SignInPage() {
     setLoading(true);
     setResponse(null);
     try {
-      await axios.post("/api/sign-in", values);
-      router.push(DEFAULT_LOGIN_REDIRECT_URL);
+      const resp = await axios.post("/api/sign-in", values);
+      if (resp.data.type == "conf_email") {
+        setResponse({ type: "success", message: resp?.data?.response });
+      } else {
+        router.push(DEFAULT_LOGIN_REDIRECT_URL);
+      }
     } catch (err: any) {
       setResponse({ type: "error", message: err?.response?.data?.error });
     }
