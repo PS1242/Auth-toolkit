@@ -32,6 +32,15 @@ model User {
   updatedAt DateTime @updatedAt
 }
 
+model VerificationToken {
+  id      String   @id @default(cuid())
+  email   String
+  token   String   @unique
+  expires DateTime
+
+  @@unique([email, token])
+}
+
 model Account {
   userId            String
   type              String

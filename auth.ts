@@ -7,6 +7,7 @@ import bcrypt from "bcryptjs";
 import { JWT } from "next-auth/jwt";
 import Google from "next-auth/providers/google";
 import GitHub from "next-auth/providers/github";
+import { getUserById } from "./lib/users";
 
 declare module "next-auth" {
   interface Session {
@@ -59,6 +60,20 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         session.user.role = token.role;
       }
       return session;
+    },
+    async signIn({ user, account }) {
+      if (account?.provider !== "credentials") {
+        return true;
+      }
+
+      if (user && user?.id) {
+        const existingUser = await getUserById(user.id);
+        if (!existingUser?.emailVerified) {
+          return false;
+        }
+      }
+
+      return true;
     },
   },
   pages: {
